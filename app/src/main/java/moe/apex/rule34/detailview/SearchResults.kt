@@ -29,10 +29,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import kotlinx.coroutines.launch
+import moe.apex.rule34.R
 import moe.apex.rule34.image.ImageBoardAuth
 import moe.apex.rule34.image.ImageBoardRequirement
 import moe.apex.rule34.image.ImageRating
@@ -169,7 +171,7 @@ fun SearchResults(navController: NavController, source: ImageSource, tagList: Li
     MainScreenScaffold(
         topAppBar = {
             LargeTitleBar(
-                title = "Search results",
+                title = stringResource(R.string.title_search_results),
                 scrollBehavior = scrollBehavior,
                 navController = navController,
                 additionalActions = {
@@ -206,10 +208,8 @@ fun SearchResults(navController: NavController, source: ImageSource, tagList: Li
             ) {
                 ExpressiveContainer(position = ListItemPosition.SINGLE_ELEMENT) {
                     TitleSummary(
-                        title = "API Key required",
-                        summary = "${source.label} requires an API key to search.\n" +
-                                  "Add an API key in Settings.\n" +
-                                  "Alternatively, use a different image source.",
+                        title = stringResource(R.string.title_api_key_required),
+                        summary = stringResource(R.string.api_key_required_summary)
                     )
                 }
                 Button(
@@ -240,7 +240,7 @@ fun SearchResults(navController: NavController, source: ImageSource, tagList: Li
             filterComposable = if (filterLocally) { {
                 HorizontallyScrollingChipsWithLabels(
                     modifier = Modifier.padding(bottom = TINY_SPACER.dp),
-                    labels = listOf("Ratings"),
+                    labels = listOf(stringResource(R.string.filter_ratings)),
                     content = listOf(ratingRows)
                 )
             } } else null,

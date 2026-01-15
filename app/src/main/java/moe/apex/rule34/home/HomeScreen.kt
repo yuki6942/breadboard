@@ -31,10 +31,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import moe.apex.rule34.R
 import moe.apex.rule34.detailview.ImageGrid
 import moe.apex.rule34.preferences.Experiment
 import moe.apex.rule34.preferences.LocalPreferences
@@ -89,7 +91,7 @@ fun HomeScreen(
     val pullToRefreshController = rememberPullToRefreshController(onRefresh = onRefresh)
 
     MainScreenScaffold(
-        title = "Breadboard",
+        title = stringResource(R.string.app_name),
         largeTopBar = false,
         scrollBehavior = scrollBehavior,
         addBottomPadding = false,
@@ -171,7 +173,7 @@ fun HomeScreen(
                         modifier = Modifier.fillMaxWidth(),
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
-                        Text("No recommendations right now.")
+                        Text(stringResource(R.string.txt_no_recommendations))
                         TextButton(
                             onClick = {
                                 pullToRefreshController.refresh(animate = true)
@@ -179,7 +181,7 @@ fun HomeScreen(
                         ) {
                             Icon(Icons.Default.Refresh, contentDescription = null)
                             Spacer(Modifier.width(SMALL_SPACER.dp))
-                            Text("Refresh")
+                            Text(stringResource(R.string.txt_refresh))
                         }
                     }
                 },

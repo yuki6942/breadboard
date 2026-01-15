@@ -19,10 +19,12 @@ import androidx.compose.runtime.snapshots.Snapshot
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import kotlinx.coroutines.launch
+import moe.apex.rule34.R
 import moe.apex.rule34.detailview.ImageGrid
 import moe.apex.rule34.image.ImageRating
 import moe.apex.rule34.preferences.Experiment
@@ -99,7 +101,7 @@ fun FavouritesPage(navController: NavController, bottomBarVisibleState: MutableS
     } })
 
     MainScreenScaffold(
-        title = "Favourite images",
+        title = stringResource(R.string.cd_favourite_images),
         scrollBehavior = scrollBehavior,
         addBottomPadding = false,
         blur = isImageCarouselVisible.value && blur,
@@ -130,7 +132,7 @@ fun FavouritesPage(navController: NavController, bottomBarVisibleState: MutableS
             filterComposable = {
                 HorizontallyScrollingChipsWithLabels(
                     modifier = Modifier.padding(bottom = TINY_SPACER.dp),
-                    labels = listOf("Sources", "Ratings"),
+                    labels = listOf(stringResource(R.string.filter_source), stringResource(R.string.filter_ratings)),
                     content = chips
                 )
             }

@@ -45,11 +45,13 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.painter.ColorPainter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
 import coil3.request.ImageRequest
 import coil3.request.crossfade
+import moe.apex.rule34.R
 import moe.apex.rule34.image.Image
 import moe.apex.rule34.preferences.LocalPreferences
 import moe.apex.rule34.util.NavBarHeightVerticalSpacer
@@ -256,7 +258,7 @@ private fun UniformImageGrid(
 @Composable
 fun NoImages() {
     Text(
-        text = "No images :(",
+        text = stringResource(R.string.txt_no_images),
         textAlign = TextAlign.Center,
         modifier = Modifier.fillMaxWidth()
     )
@@ -309,7 +311,7 @@ private fun ImagePreview(
 
     AsyncImage(
         model = model,
-        contentDescription = "Image",
+        contentDescription = stringResource(R.string.cd_image),
         contentScale = ContentScale.Crop,
         placeholder = ColorPainter(MaterialTheme.colorScheme.surfaceContainer),
         modifier = modifier.clickable { onImageClick(index, image) }

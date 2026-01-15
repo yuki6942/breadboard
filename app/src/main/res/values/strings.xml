@@ -1,3 +1,13 @@
 <resources>
-    <string name="app_name">Breadboard</string>
+    <string name="app_name" translatable="false">Breadboard</string>
+    <string name="txt_no_images">No images :(</string>
+    <string name="cd_image">Image</string>
+    <string name="title_search_results">Search results</string>
+    <string name="title_api_key_required">API key required</string>
+    <string name="api_key_required_summary">%s requires an API key to search.\\nAdd an API key in Settings.\\nAlternatively, use a different image source.</string>
+    <string name="filter_ratings">Ratings</string>
+    <string name="cd_favourite_images">Favourite images</string>
+    <string name="filter_source">Source</string>
+    <string name="txt_no_recommendations">No recommendations right now.</string>
+    <string name="txt_refresh">Refresh</string>
 </resources>

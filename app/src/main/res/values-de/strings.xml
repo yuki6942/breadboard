@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="txt_no_images">Keine Bilder :(</string>
+    <string name="cd_image">Bild</string>
+    <string name="title_search_results">Suchergebnisse</string>
+    <string name="title_api_key_required">API-Schlüssel erforderlich</string>
+    <string name="api_key_required_summary">%s erfordert einen API-Schlüssel für die Suche.\\nFügen Sie in den Einstellungen einen API-Schlüssel hinzu.\\nAlternativ können Sie eine andere Bildquelle verwenden.</string>
+    <string name="filter_ratings">Inhaltsfilter</string>
+    <string name="cd_favourite_images">Lieblingsbilder</string>
+    <string name="filter_source">Quelle</string>
+    <string name="txt_no_recommendations">Zurzeit keine Empfehlungen.</string>
+    <string name="txt_refresh">Aktualisieren</string>
+</resources>
