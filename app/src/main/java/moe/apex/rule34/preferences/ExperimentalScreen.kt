@@ -14,9 +14,11 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import kotlinx.coroutines.launch
+import moe.apex.rule34.R
 import moe.apex.rule34.prefs
 import moe.apex.rule34.util.ExpressiveGroup
 import moe.apex.rule34.util.LARGE_SPACER
@@ -25,7 +27,6 @@ import moe.apex.rule34.util.MainScreenScaffold
 import moe.apex.rule34.util.MEDIUM_SPACER
 import moe.apex.rule34.util.SMALL_LARGE_SPACER
 import moe.apex.rule34.util.Summary
-
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -38,7 +39,7 @@ fun ExperimentalScreen(navController: NavHostController) {
     MainScreenScaffold(
         topAppBar = {
             LargeTitleBar(
-                title = "Experimental features",
+                title = stringResource(R.string.experimental_title),
                 scrollBehavior = scrollBehavior,
                 navController = navController
             )
@@ -55,11 +56,7 @@ fun ExperimentalScreen(navController: NavHostController) {
             item {
                 Summary(
                     modifier = Modifier.padding(horizontal = SMALL_LARGE_SPACER.dp),
-                    text = "These features are incomplete and might have bugs. " +
-                           "Future updates may enable an experimental feature by default " +
-                           "(at which point it will be removed from this page), or they may " +
-                           "remove the feature entirely.\n\n" +
-                           "Please report any issues you find with these features on GitHub.",
+                    text = stringResource(R.string.experimental_summary),
                 )
             }
             item {

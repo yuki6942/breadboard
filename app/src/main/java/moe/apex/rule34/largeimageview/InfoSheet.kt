@@ -4,7 +4,6 @@ package moe.apex.rule34.largeimageview
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ContextualFlowRow
@@ -21,7 +20,7 @@ import androidx.compose.material.icons.rounded.Block
 import androidx.compose.material.icons.rounded.CheckCircleOutline
 import androidx.compose.material.icons.rounded.ContentCopy
 import androidx.compose.material.icons.rounded.Search
-import androidx.compose.material3.BasicAlertDialog
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -41,11 +40,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalClipboard
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import kotlinx.coroutines.launch
 import moe.apex.rule34.DeepLinkActivity
 import moe.apex.rule34.MainActivity
+import moe.apex.rule34.R
 import moe.apex.rule34.image.Image
 import moe.apex.rule34.navigation.ImageView
 import moe.apex.rule34.navigation.Results
@@ -141,39 +142,31 @@ fun InfoSheet(navController: NavController, image: Image, onDismissRequest: () -
     TitledModalBottomSheet(
         onDismissRequest = onDismissRequest,
         sheetState = sheetState ?: return,
-        title = "About this image",
+        title = context.getString(R.string.info_about_image),
     ) {
         if (selectedTag != null) {
             /* We need to have this dialog inside the sheet otherwise it'll just automatically
                dismiss itself and the sheet because this entire system sucks. */
             val blocked = selectedTag in prefs.blockedTags
-            BasicAlertDialog(
+            AlertDialog(
                 onDismissRequest = { selectedTag = null },
-                modifier = Modifier.background(
-                    color = MaterialTheme.colorScheme.surfaceContainerHigh,
-                    shape = MaterialTheme.shapes.extraLarge
-                )
-            ) {
-                Column(
-                    modifier = Modifier.padding(
-                        start = LARGE_SPACER.dp,
-                        end = LARGE_SPACER.dp,
-                        top = LARGE_SPACER.dp,
-                        bottom = LARGE_SPACER.dp + MEDIUM_SPACER.dp // The chip has 8dp padding so we should really match them but I think looks more balanced.
-                    ),
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.spacedBy(SMALL_LARGE_SPACER.dp)
-                ) {
-                    CombinedClickableFilterChip(
-                        label = { Text(selectedTag!!) },
-                        warning = blocked,
-                        onClick = { },
-                        onLongClick = { },
-                    )
-
+                title = {
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.Center
+                    ) {
+                        CombinedClickableFilterChip(
+                            label = { Text(selectedTag!!) },
+                            warning = blocked,
+                            onClick = { },
+                            onLongClick = { }
+                        )
+                    }
+                },
+                text = {
                     Column(verticalArrangement = Arrangement.spacedBy(2.dp)) {
                         ButtonListItem(
-                            label = "Search",
+                            text = context.getString(R.string.action_search),
                             icon = Icons.Rounded.Search,
                             modifier = Modifier.fillMaxWidth(),
                             position = ListItemPosition.TOP
@@ -183,7 +176,7 @@ fun InfoSheet(navController: NavController, image: Image, onDismissRequest: () -
                             startTagSearch(searchTag)
                         }
                         ButtonListItem(
-                            label = "Copy to clipboard",
+                            text = context.getString(R.string.action_copy_to_clipboard),
                             icon = Icons.Rounded.ContentCopy,
                             modifier = Modifier.fillMaxWidth(),
                             position = ListItemPosition.MIDDLE
@@ -193,7 +186,7 @@ fun InfoSheet(navController: NavController, image: Image, onDismissRequest: () -
                             }
                         }
                         ButtonListItem(
-                            label = "${if (blocked) "Unblock" else "Block"} this tag",
+                            text = "${if (blocked) R.string.action_unblocktag else R.string.action_blocktag}",
                             icon = if (blocked) Icons.Rounded.CheckCircleOutline else Icons.Rounded.Block,
                             modifier = Modifier.fillMaxWidth(),
                             position = ListItemPosition.BOTTOM
@@ -205,7 +198,7 @@ fun InfoSheet(navController: NavController, image: Image, onDismissRequest: () -
                                         selectedTag!!
                                     )
                                 }
-                                showToast(context, "Unblocked tag ${selectedTag!!}")
+                                showToast(context, context.getString(R.string.toast_tag_unblocked, selectedTag!!))
                             } else {
                                 scope.launch {
                                     preferencesRepository.addToSet(
@@ -213,12 +206,13 @@ fun InfoSheet(navController: NavController, image: Image, onDismissRequest: () -
                                         selectedTag!!
                                     )
                                 }
-                                showToast(context, "Blocked tag ${selectedTag!!}")
+                                showToast(context, context.getString(R.string.toast_tag_blocked, selectedTag!!))
                             }
                         }
                     }
-                }
-            }
+                },
+                confirmButton = { }
+            )
         }
 
         LazyColumn(
@@ -236,8 +230,8 @@ fun InfoSheet(navController: NavController, image: Image, onDismissRequest: () -
                         position = ListItemPosition.SINGLE_ELEMENT
                     ) {
                         TitleSummary(
-                            title = image.metadata.rating.label,
-                            summary = "Rating"
+                            title = context.getString(image.metadata.rating.labelRes),
+                            summary = context.getString(R.string.txt_rating)
                         )
                     }
                     Spacer(Modifier.width(MEDIUM_LARGE_SPACER.dp))
@@ -247,7 +241,7 @@ fun InfoSheet(navController: NavController, image: Image, onDismissRequest: () -
                     ) {
                         TitleSummary(
                             title = image.imageSource.label,
-                            summary = "Imageboard"
+                            summary = context.getString(R.string.summary_imageboard)
                         )
                     }
                 }
@@ -255,7 +249,7 @@ fun InfoSheet(navController: NavController, image: Image, onDismissRequest: () -
             item {
                 BasicExpressiveGroup {
                     image.metadata.source?.let {
-                        val title = "Source"
+                        val title = context.getString(R.string.filter_source)
                         item {
                             TitleSummary(
                                 title = title,
@@ -276,7 +270,7 @@ fun InfoSheet(navController: NavController, image: Image, onDismissRequest: () -
                         }
                     }
                     image.metadata.pixivUrl?.let {
-                        val title = "Pixiv URL"
+                        val title = context.getString(R.string.title_pixiv_url)
                         item {
                             TitleSummary(
                                 title = title,
@@ -297,7 +291,7 @@ fun InfoSheet(navController: NavController, image: Image, onDismissRequest: () -
                         }
                     }
                     image.highestQualityFormatUrl.let {
-                        val title = "File URL"
+                        val title = context.getString(R.string.title_file_url)
                         item {
                             TitleSummary(
                                 title = title,
@@ -319,7 +313,7 @@ fun InfoSheet(navController: NavController, image: Image, onDismissRequest: () -
                     image.metadata.parentId?.let {
                         item {
                             TitleSummary(
-                                title = "View parent image",
+                                title = context.getString(R.string.title_view_parent_image),
                                 onClick = {
                                     hideAndThen {
                                         navController.navigate(
@@ -340,7 +334,7 @@ fun InfoSheet(navController: NavController, image: Image, onDismissRequest: () -
                         image.id?.let {
                             item {
                                 TitleSummary(
-                                    title = "View related images",
+                                    title = context.getString(R.string.title_view_related_images),
                                     onClick = {
                                         hideAndThen {
                                             if (context is DeepLinkActivity) {
@@ -406,7 +400,7 @@ private fun CopyIcon(itemType: String, onClick: () -> Unit) {
     IconButton(onClick = onClick) {
         Icon(
             imageVector = Icons.Rounded.ContentCopy,
-            contentDescription = "Copy $itemType",
+            contentDescription = stringResource(R.string.content_desc_copy, itemType),
             tint = MaterialTheme.colorScheme.primary
         )
     }

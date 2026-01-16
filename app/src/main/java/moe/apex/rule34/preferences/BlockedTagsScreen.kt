@@ -36,10 +36,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import kotlinx.coroutines.launch
+import moe.apex.rule34.R
 import moe.apex.rule34.prefs
 import moe.apex.rule34.util.BaseHeading
 import moe.apex.rule34.util.DISABLED_OPACITY
@@ -56,7 +58,6 @@ import moe.apex.rule34.util.Summary
 import moe.apex.rule34.util.TINY_SPACER
 import moe.apex.rule34.viewmodel.BreadboardViewModel
 
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun BlockedTagsScreen(navController: NavHostController, viewModel: BreadboardViewModel) {
@@ -72,19 +73,19 @@ fun BlockedTagsScreen(navController: NavHostController, viewModel: BreadboardVie
     if (showAddDialog) {
         var content by remember { mutableStateOf("") }
         AlertDialog(
-            title = { Text("Add blocked tags") },
+            title = { Text(stringResource(R.string.blocked_tags_add_dialog_title)) },
             text = {
                 Column(verticalArrangement = Arrangement.spacedBy(SMALL_SPACER.dp)) {
                     PreferenceTextBox(
                         value = content,
-                        label = "Tags",
+                        label = stringResource(R.string.blocked_tags_tags_label),
                         autoCorrectEnabled = true
                     ) {
                         content = it.lowercase()
                     }
                     Summary(
                         modifier = Modifier.padding(start = TINY_SPACER.dp),
-                        text = "Separate multiple tags with a space."
+                        text = stringResource(R.string.blocked_tags_add_dialog_hint),
                     )
                 }
             },
@@ -108,12 +109,12 @@ fun BlockedTagsScreen(navController: NavHostController, viewModel: BreadboardVie
                         viewModel.setRecommendationsProvider(null)
                     }
                 ) {
-                    Text("Add")
+                    Text(stringResource(R.string.action_add))
                 }
             },
             dismissButton = {
                 TextButton(onClick = { showAddDialog = false }) {
-                    Text("Cancel")
+                    Text(stringResource(R.string.action_cancel))
                 }
             },
             onDismissRequest = { showAddDialog = false },
@@ -123,14 +124,17 @@ fun BlockedTagsScreen(navController: NavHostController, viewModel: BreadboardVie
     MainScreenScaffold(
         topAppBar = {
             LargeTitleBar(
-                title = "Blocked tags",
+                title = stringResource(R.string.blocked_tags_title),
                 scrollBehavior = scrollBehavior,
                 navController = navController
             )
         },
         floatingActionButton = {
             FloatingActionButton(onClick = { showAddDialog = true }) {
-                Icon(Icons.Rounded.Add, "Add blocked tag")
+                Icon(
+                    imageVector = Icons.Rounded.Add,
+                    contentDescription = stringResource(R.string.cd_add_blocked_tag),
+                )
             }
         }
     ) {
@@ -140,12 +144,17 @@ fun BlockedTagsScreen(navController: NavHostController, viewModel: BreadboardVie
                 .fillMaxSize()
                 .nestedScroll(scrollBehavior.nestedScrollConnection),
             verticalArrangement = Arrangement.spacedBy(2.dp),
-            contentPadding = PaddingValues(start = MEDIUM_SPACER.dp, end = MEDIUM_SPACER.dp, top = SMALL_LARGE_SPACER.dp, bottom = 88.dp), // FAB height + 16dp vertical padding
+            contentPadding = PaddingValues(
+                start = MEDIUM_SPACER.dp,
+                end = MEDIUM_SPACER.dp,
+                top = SMALL_LARGE_SPACER.dp,
+                bottom = 88.dp
+            ),
         ) {
             item {
                 Summary(
                     modifier = Modifier.padding(horizontal = TINY_SPACER.dp),
-                    text = "Images with any of these tags will not appear in search results or recommendations. However, they will still show in your Favourites.",
+                    text = stringResource(R.string.blocked_tags_summary),
                 )
                 LargeVerticalSpacer()
             }
@@ -164,7 +173,7 @@ fun BlockedTagsScreen(navController: NavHostController, viewModel: BreadboardVie
                             modifier = Modifier.size(120.dp)
                         )
                         Text(
-                            text = "No tags blocked. Search with caution.",
+                            text = stringResource(R.string.blocked_tags_empty_state),
                             style = MaterialTheme.typography.titleLarge,
                             textAlign = TextAlign.Center
                         )
@@ -176,7 +185,7 @@ fun BlockedTagsScreen(navController: NavHostController, viewModel: BreadboardVie
                 item {
                     BaseHeading(
                         modifier = Modifier.padding(start = SMALL_SPACER.dp, bottom = 6.dp),
-                        text = "Automatically blocked"
+                        text = stringResource(R.string.blocked_tags_auto_section),
                     )
                 }
 
@@ -187,7 +196,7 @@ fun BlockedTagsScreen(navController: NavHostController, viewModel: BreadboardVie
                         position = when (index) {
                             0 -> ListItemPosition.TOP
                             aiTags.size - 1 -> ListItemPosition.BOTTOM
-                            else -> ListItemPosition.MIDDLE // Not used at the time of writing but if more AI tags appear in the future when it would be useful
+                            else -> ListItemPosition.MIDDLE
                         }
                     )
                 }
@@ -198,13 +207,13 @@ fun BlockedTagsScreen(navController: NavHostController, viewModel: BreadboardVie
                             modifier = Modifier
                                 .padding(start = SMALL_SPACER.dp, bottom = 6.dp)
                                 .animateItem(),
-                            text = "Blocked by you"
+                            text = stringResource(R.string.blocked_tags_manual_section),
                         )
                     }
                 }
             }
 
-            itemsIndexed(blockedTags, key = { index, tag -> tag }) { index, tag ->
+            itemsIndexed(blockedTags, key = { _, tag -> tag }) { index, tag ->
                 ExpressiveTagEntryContainer(
                     modifier = Modifier.animateItem(),
                     label = tag,
@@ -228,7 +237,7 @@ fun BlockedTagsScreen(navController: NavHostController, viewModel: BreadboardVie
                         ) {
                             Icon(
                                 imageVector = Icons.Rounded.Delete,
-                                contentDescription = "Unblock tag",
+                                contentDescription = stringResource(R.string.cd_unblock_tag),
                                 tint = MaterialTheme.colorScheme.primary
                             )
                         }

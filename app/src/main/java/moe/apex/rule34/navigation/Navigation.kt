@@ -34,6 +34,7 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
@@ -109,12 +110,12 @@ fun Navigation(navController: NavHostController, viewModel: BreadboardViewModel,
                     ) {
                         NavigationBar(containerColor = BreadboardTheme.colors.titleBar) {
                             NavigationBarItem(
-                                label = { Text("Browse") },
+                                label = { Text(stringResource(R.string.nav_browse)) },
                                 selected = currentRoute.routeIs(Home::class),
                                 icon = {
                                     Icon(
                                         painter = painterResource(if (currentRoute.routeIs(Home::class)) R.drawable.ic_home_filled else R.drawable.ic_home_hollow),
-                                        contentDescription = "Browse"
+                                        contentDescription = stringResource(R.string.cd_nav_browse)
                                     )
                                 },
                                 onClick = {
@@ -126,12 +127,12 @@ fun Navigation(navController: NavHostController, viewModel: BreadboardViewModel,
                                 }
                             )
                             NavigationBarItem(
-                                label = { Text("Search") },
+                                label = { Text(stringResource(R.string.nav_search)) },
                                 selected = currentRoute.routeIs(searchScreens),
                                 icon = {
                                     Icon(
                                         imageVector = Icons.Rounded.Search,
-                                        contentDescription = "Search"
+                                        contentDescription = stringResource(R.string.cd_nav_search)
                                     )
                                 },
                                 onClick = {
@@ -148,12 +149,12 @@ fun Navigation(navController: NavHostController, viewModel: BreadboardViewModel,
                                 }
                             )
                             NavigationBarItem(
-                                label = { Text("Favourites") },
+                                label = { Text(stringResource(R.string.nav_favourites)) },
                                 selected = currentRoute.routeIs(Favourites::class),
                                 icon = {
                                     Icon(
                                         imageVector = if (currentRoute.routeIs(Favourites::class)) Icons.Rounded.Favorite else Icons.Rounded.FavoriteBorder,
-                                        contentDescription = "Favourite images"
+                                        contentDescription = stringResource(R.string.cd_nav_favourite_images)
                                     )
                                 },
                                 onClick = {
@@ -165,12 +166,12 @@ fun Navigation(navController: NavHostController, viewModel: BreadboardViewModel,
                                 }
                             )
                             NavigationBarItem(
-                                label = { Text("Settings") },
+                                label = { Text(stringResource(R.string.nav_settings)) },
                                 selected = currentRoute.routeIs(settingsScreens),
                                 icon = {
                                     Icon(
                                         painter = if (currentRoute.routeIs(settingsScreens)) rememberVectorPainter(Icons.Rounded.Settings) else painterResource(R.drawable.ic_settings_hollow),
-                                        contentDescription = "Settings"
+                                        contentDescription = stringResource(R.string.cd_nav_settings)
                                     )
                                 },
                                 onClick = {

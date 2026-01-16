@@ -22,6 +22,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
@@ -37,7 +38,6 @@ import moe.apex.rule34.util.MainScreenScaffold
 import moe.apex.rule34.util.MEDIUM_SPACER
 import moe.apex.rule34.util.TitleSummary
 
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LibrariesScreen(navController: NavHostController) {
@@ -49,7 +49,7 @@ fun LibrariesScreen(navController: NavHostController) {
     MainScreenScaffold(
         topAppBar = {
             LargeTitleBar(
-                title = "Third-party notices",
+                title = stringResource(R.string.about_third_party_notices_title),
                 scrollBehavior = scrollBehavior,
                 navController = navController
             )
@@ -72,14 +72,20 @@ fun LibrariesScreen(navController: NavHostController) {
                         HorizontalDivider()
                         LazyColumn(contentPadding = PaddingValues(vertical = MEDIUM_SPACER.dp)) {
                             item {
-                                Text(selectedLibrary!!.strippedLicenseContent.takeIf { it.isNotEmpty() }
-                                    ?: "No license text.")
+                                Text(
+                                    selectedLibrary!!.strippedLicenseContent.takeIf { it.isNotEmpty() }
+                                        ?: stringResource(R.string.about_no_license_text)
+                                )
                             }
                         }
                         HorizontalDivider()
                     }
                 },
-                confirmButton = { TextButton({ selectedLibrary = null }) { Text("Close") } }
+                confirmButton = {
+                    TextButton(onClick = { selectedLibrary = null }) {
+                        Text(stringResource(R.string.common_close))
+                    }
+                }
             )
         }
 
@@ -104,8 +110,17 @@ fun LibrariesScreen(navController: NavHostController) {
                     TitleSummary(
                         modifier = Modifier.fillMaxWidth(),
                         title = library.name,
-                        summary = "Version ${library.artifactVersion}, by ${library.author}\n" +
-                                  library.licenses.joinToString { license -> license.name },
+                        summary = buildString {
+                            append(
+                                stringResource(
+                                    R.string.about_library_version_by,
+                                    library.artifactVersion.orEmpty(),
+                                    library.author.orEmpty()
+                                )
+                            )
+                            append("\n")
+                            append(library.licenses.joinToString { license -> license.name })
+                        },
                         onClick = { selectedLibrary = library }
                     )
                 }

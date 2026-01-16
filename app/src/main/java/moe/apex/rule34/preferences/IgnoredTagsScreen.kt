@@ -35,12 +35,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import moe.apex.rule34.R
 import moe.apex.rule34.prefs
 import moe.apex.rule34.tag.IgnoredTagsHelper
 import moe.apex.rule34.util.DISABLED_OPACITY
@@ -57,7 +59,6 @@ import moe.apex.rule34.util.saveIgnoreListWithTimestamp
 import moe.apex.rule34.util.showToast
 import moe.apex.rule34.viewmodel.BreadboardViewModel
 
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun IgnoredTagsScreen(navController: NavHostController, viewModel: BreadboardViewModel) {
@@ -72,7 +73,7 @@ fun IgnoredTagsScreen(navController: NavHostController, viewModel: BreadboardVie
     MainScreenScaffold(
         topAppBar = {
             LargeTitleBar(
-                title = "Ignored tags",
+                title = stringResource(R.string.ignored_tags_title),
                 scrollBehavior = scrollBehavior,
                 navController = navController,
                 additionalActions = {
@@ -84,7 +85,7 @@ fun IgnoredTagsScreen(navController: NavHostController, viewModel: BreadboardVie
                         ) {
                             Icon(
                                 imageVector = Icons.Rounded.MoreVert,
-                                contentDescription = "More"
+                                contentDescription = stringResource(R.string.cd_more)
                             )
                             DropdownMenu(
                                 expanded = showOverflowMenu,
@@ -94,7 +95,7 @@ fun IgnoredTagsScreen(navController: NavHostController, viewModel: BreadboardVie
                             ) {
                                 DropdownMenuItem(
                                     enabled = refreshEnabled,
-                                    text = { Text("Refresh meta tags") },
+                                    text = { Text(stringResource(R.string.ignored_tags_refresh_meta_tags)) },
                                     leadingIcon = {
                                         Icon(
                                             imageVector = Icons.Rounded.Refresh,
@@ -111,12 +112,22 @@ fun IgnoredTagsScreen(navController: NavHostController, viewModel: BreadboardVie
                                                     saveIgnoreListWithTimestamp(context, it)
                                                     viewModel.setRecommendationsProvider(null)
                                                     withContext(Dispatchers.Main) {
-                                                        showToast(context, "Refreshed ${it.size} tags")
+                                                        showToast(
+                                                            context,
+                                                            context.resources.getQuantityString(
+                                                                R.plurals.ignored_tags_refreshed_toast,
+                                                                it.size,
+                                                                it.size
+                                                            )
+                                                        )
                                                     }
                                                 },
                                                 onFailure = {
                                                     withContext(Dispatchers.Main) {
-                                                        showToast(context, "Failed to refresh tags")
+                                                        showToast(
+                                                            context,
+                                                            context.getString(R.string.ignored_tags_refresh_failed_toast)
+                                                        )
                                                     }
                                                 }
                                             )
@@ -138,15 +149,17 @@ fun IgnoredTagsScreen(navController: NavHostController, viewModel: BreadboardVie
                 .fillMaxSize()
                 .nestedScroll(scrollBehavior.nestedScrollConnection),
             verticalArrangement = Arrangement.spacedBy(2.dp),
-            contentPadding = PaddingValues(start = MEDIUM_SPACER.dp, end = MEDIUM_SPACER.dp, top = SMALL_LARGE_SPACER.dp, bottom = SMALL_LARGE_SPACER.dp),
+            contentPadding = PaddingValues(
+                start = MEDIUM_SPACER.dp,
+                end = MEDIUM_SPACER.dp,
+                top = SMALL_LARGE_SPACER.dp,
+                bottom = SMALL_LARGE_SPACER.dp
+            ),
         ) {
             item {
                 Summary(
                     modifier = Modifier.padding(horizontal = TINY_SPACER.dp),
-                    text = "Ignoring a frequent tag means that Breadboard will not use it to " +
-                           "recommend new content. Ignored tags are not blocked and you may " +
-                           "still see content with them, but they will not be used to influence " +
-                           "recommendations."
+                    text = stringResource(R.string.ignored_tags_summary)
                 )
                 LargeVerticalSpacer()
             }
@@ -165,7 +178,7 @@ fun IgnoredTagsScreen(navController: NavHostController, viewModel: BreadboardVie
                             modifier = Modifier.size(120.dp)
                         )
                         Text(
-                            text = "No ignored tags.",
+                            text = stringResource(R.string.ignored_tags_empty_state),
                             style = MaterialTheme.typography.titleLarge,
                             textAlign = TextAlign.Center
                         )
@@ -198,7 +211,7 @@ fun IgnoredTagsScreen(navController: NavHostController, viewModel: BreadboardVie
                         ) {
                             Icon(
                                 imageVector = Icons.Rounded.Delete,
-                                contentDescription = "Unignore tag",
+                                contentDescription = stringResource(R.string.cd_unignore_tag),
                                 tint = MaterialTheme.colorScheme.primary
                             )
                         }

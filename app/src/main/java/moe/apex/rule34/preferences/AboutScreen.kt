@@ -39,6 +39,7 @@ import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.asComposePath
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
@@ -101,7 +102,7 @@ fun AboutScreen(navController: NavHostController) {
     MainScreenScaffold(
         topAppBar = {
             LargeTitleBar(
-                title = "About",
+                title = stringResource(R.string.about_title),
                 scrollBehavior = scrollBehavior,
                 navController = navController
             )
@@ -158,7 +159,7 @@ fun AboutScreen(navController: NavHostController) {
                                 )
                                 .crossfade(true)
                                 .build(),
-                            contentDescription = "App Icon",
+                            contentDescription = stringResource(R.string.cd_app_icon),
                             colorFilter = if (isMonochrome) ColorFilter.tint(MaterialTheme.colorScheme.primary) else null,
                             modifier = Modifier
                                 .requiredSize(112.dp)
@@ -167,7 +168,7 @@ fun AboutScreen(navController: NavHostController) {
                     }
                     SmallVerticalSpacer()
                     Text(
-                        text = "Breadboard",
+                        text = stringResource(R.string.app_name),
                         style = MaterialTheme.typography.titleLarge
                     )
                     Text(
@@ -178,33 +179,33 @@ fun AboutScreen(navController: NavHostController) {
                 }
             }
             item {
-                ExpressiveGroup("Maintainer") {
+                ExpressiveGroup(stringResource(R.string.about_section_maintainer)) {
                     item {
                         GitHubUserContainer(apex2504)
                     }
                 }
             }
             item {
-                ExpressiveGroup("Original concept") {
+                ExpressiveGroup(stringResource(R.string.about_section_original_concept)) {
                     item {
                         GitHubUserContainer(devoxin)
                     }
                 }
             }
             item {
-                ExpressiveGroup("Breadboard") {
+                ExpressiveGroup(stringResource(R.string.app_name)) {
                     item {
                         TitleSummary(
                             modifier = Modifier.fillMaxWidth(),
                             title = "GitHub",
-                            summary = "Report bugs, request features, or contribute!"
+                            summary = stringResource(R.string.about_github_summary)
                         ) { openUrl(context, "https://github.com/breadboardapp/breadboard") }
                     }
                     item {
                         TitleSummary(
                             modifier = Modifier.fillMaxWidth(),
-                            title = "Third-party notices",
-                            summary = "Libraries used in Breadboard",
+                            title = stringResource(R.string.about_third_party_notices_title),
+                            summary = stringResource(R.string.about_third_party_notices_summary),
                             trailingIcon = { ChevronRight() }
                         ) { navController.navigate(LibrariesSettings) }
                     }
@@ -226,7 +227,7 @@ private fun GitHubUserContainer(user: GitHubUser) {
         leadingIcon = {
             AsyncImage(
                 model = user.avatarUrl,
-                contentDescription = "Avatar",
+                contentDescription = stringResource(R.string.cd_avatar),
                 modifier = Modifier.clip(CircleShape)
             )
         },

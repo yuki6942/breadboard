@@ -85,7 +85,7 @@ fun FavouritesPage(navController: NavController, bottomBarVisibleState: MutableS
     chips.add(ImageRating.entries.map { {
         FilterChip(
             selected = it in prefs.favouritesRatingsFilter,
-            label = { Text(it.label) },
+            label = { Text(stringResource(it.labelRes)) },
             colors = filterChipSolidColor,
             border = null,
             onClick = {

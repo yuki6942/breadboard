@@ -1,5 +1,8 @@
 package moe.apex.rule34.image
 
+import android.content.Context
+import androidx.annotation.StringRes
+import moe.apex.rule34.R
 import moe.apex.rule34.preferences.PrefEnum
 
 
@@ -9,21 +12,18 @@ private val FILTER_QUESTIONABLE = listOf("-rating:questionable", "-rating:q")
 private val FILTER_EXPLICIT     = listOf("-rating:explicit", "-rating:e")
 
 
-enum class ImageRating(override val label: String) : PrefEnum<ImageRating> {
-    SAFE("Safe"),
-    SENSITIVE("Sensitive"),
-    QUESTIONABLE("Questionable"),
-    EXPLICIT("Explicit"),
-    UNKNOWN("Unknown");
+enum class ImageRating(@StringRes val labelRes: Int) : PrefEnum<ImageRating> {
+    SAFE(R.string.rating_safe),
+    SENSITIVE(R.string.rating_sensitive),
+    QUESTIONABLE(R.string.rating_questionable),
+    EXPLICIT(R.string.rating_explicit),
+    UNKNOWN(R.string.rating_unknown);
 
-    /* Why are their naming schemes so inconsistent lol
-       The Gelbooru help page doesn't mention "sensitive" at all but posts seem to regularly use it.
-       Likewise, Safebooru seems to use both "general" and "safe" for some reason.
+    override val label: String
+        get() = name
 
-       Yande.re differs from other letter-based sources because "s" is safe rather than sensitive
-       and sensitive does not exist.
-       However, negative filtering by more than one rating doesn't work on Yande.re, so we're going
-       to enforce the local rating option. */
+    fun label(context: Context): String = context.getString(labelRes)
+
     companion object {
         private val mapping = mapOf(
             SAFE to FILTER_SAFE,
@@ -32,13 +32,10 @@ enum class ImageRating(override val label: String) : PrefEnum<ImageRating> {
             EXPLICIT to FILTER_EXPLICIT
         )
 
-
         fun buildQueryListFor(vararg ratings: ImageRating): List<List<String>> {
             val currentFilter = mutableListOf(FILTER_SAFE, FILTER_SENSITIVE, FILTER_QUESTIONABLE, FILTER_EXPLICIT)
             for (rating in ratings) {
-                if (rating in mapping) {
-                    currentFilter.remove(mapping[rating])
-                }
+                mapping[rating]?.let { currentFilter.remove(it) }
             }
             return currentFilter
         }
